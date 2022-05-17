@@ -8,6 +8,10 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var wordsRouter = require('./routes/words');
 
+var mysql = require('./lib/mysql');
+mysql.createConnection();
+mysql.createQuery('SELECT * FROM WORDS');
+
 var app = express();
 
 // view engine setup
