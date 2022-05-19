@@ -9,8 +9,8 @@ var usersRouter = require('./routes/users');
 var wordsRouter = require('./routes/words');
 
 var mysql = require('./lib/mysql');
-mysql.createConnection();
-mysql.createQuery('SELECT * FROM WORDS');
+var results = mysql.query('SELECT * FROM WORDS');
+console.log("results:", results);
 
 var app = express();
 
