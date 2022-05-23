@@ -1,24 +1,47 @@
-var express = require('express');
-var mysql = require('../lib/mysql');
+const express = require('express');
+const mysql = require('../lib/mysql');
 
-var router = express.Router();
+const router = express.Router();
+const pool = mysql.getPool();
 
 router.post('', async (req, res, next) => {
-  const korean = req.get('korean');
+  const korean = decodeURIComponent(req.get('korean'));
   const english = req.get('english');
   const description = req.get('description');
-
-  const results = mysql.query(`INSERT INTO WORDS (KOREAN, ENGLISH, DESCRIPTION) VALUES ('${korean}','${english}','${description}')`);
-
-  res.send(results);
+  const sql = `INSERT INTO WORDS (KOREAN, ENGLISH, DESCRIPTION) VALUES ('${korean}','${english}','${description}')`;
+  pool.getConnection((error, connection) => {
+    if(error) {
+      console.log(err);
+      res.status(500).send('Internal Server Error');
+    }
+    connection.query(sql, (error, results, fields) => {
+      connection.release();
+      if(error) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      }
+      res.send(results);
+    });
+  });
 });
 
 router.get('/:seq', async (req, res, next) => {
   const word_seq = req.params.seq;
-
-  const results = mysql.query(`SELECT * FROM WORDS WHERE SEQ = ${word_seq}`);
-
-  res.send(results);
+  const sql = `SELECT * FROM WORDS WHERE SEQ = ${word_seq}`;
+  pool.getConnection((error, connection) => {
+    if(error) {
+      console.log(err);
+      res.status(500).send('Internal Server Error');
+    }
+    connection.query(sql, (error, results, fields) => {
+      connection.release();
+      if(error) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      }
+      res.send(results);
+    });
+  });
 });
 
 module.exports = router;
