@@ -12,14 +12,17 @@ router.post('', async (req, res, next) => {
   pool.getConnection((error, connection) => {
     if(error) {
       console.log(err);
+      res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate'); // For vercel environment
       res.status(500).send('Internal Server Error');
     }
     connection.query(sql, (error, results, fields) => {
       connection.release();
       if(error) {
         console.log(err);
+        res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate'); // For vercel environment
         res.status(500).send('Internal Server Error');
       }
+      res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate'); // For vercel environment
       res.send(results);
     });
   });
@@ -31,14 +34,17 @@ router.get('/:seq', async (req, res, next) => {
   pool.getConnection((error, connection) => {
     if(error) {
       console.log(err);
+      res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate'); // For vercel environment
       res.status(500).send('Internal Server Error');
     }
     connection.query(sql, (error, results, fields) => {
       connection.release();
       if(error) {
         console.log(err);
+        res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate'); // For vercel environment
         res.status(500).send('Internal Server Error');
       }
+      res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate'); // For vercel environment
       res.send(results);
     });
   });
