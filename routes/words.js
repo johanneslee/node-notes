@@ -25,6 +25,24 @@ router.post('', async (req, res, next) => {
   });
 });
 
+router.get('', async (req, res, next) => {
+  const sql = `SELECT * FROM WORDS`;
+  pool.getConnection((error, connection) => {
+    if(error) {
+      console.log(err);
+      res.status(500).send('Internal Server Error');
+    }
+    connection.query(sql, (error, results, fields) => {
+      connection.release();
+      if(error) {
+        console.log(err);
+        res.status(500).send('Internal Server Error');
+      }
+      res.send(results);
+    });
+  });
+});
+
 router.get('/:seq', async (req, res, next) => {
   const word_seq = req.params.seq;
   const sql = `SELECT * FROM WORDS WHERE SEQ = ${word_seq}`;
