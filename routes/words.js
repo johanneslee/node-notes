@@ -5,9 +5,10 @@ const router = express.Router();
 const pool = mysql.getPool();
 
 router.post('', (req, res, next) => {
-  const korean = decodeURIComponent(req.get('korean'));
-  const english = req.get('english');
-  const description = req.get('description');
+  const jsonObj = req.body;
+  const korean = decodeURIComponent(jsonObj.korean);
+  const english = jsonObj.english;
+  const description = jsonObj.description;
   const sql = `INSERT INTO WORDS (KOREAN, ENGLISH, DESCRIPTION) VALUES ('${korean}','${english}','${description}')`;
   pool.getConnection((error, connection) => {
     if(error) {
