@@ -4,7 +4,7 @@ const mysql = require('../lib/mysql');
 const router = express.Router();
 const pool = mysql.getPool();
 
-router.post('', async (req, res, next) => {
+router.post('', (req, res, next) => {
   const korean = decodeURIComponent(req.get('korean'));
   const english = req.get('english');
   const description = req.get('description');
@@ -20,19 +20,12 @@ router.post('', async (req, res, next) => {
         console.log(err);
         res.status(500).send('Internal Server Error');
       }
-      results.map((results) => {
-        let lowerCased = {};
-        for(let key in value) {
-          lowerCased[key.toLowerCase()] = results[key];
-        }
-        results = lowerCased;
-      });
       res.send(results);
     });
   });
 });
 
-router.get('', async (req, res, next) => {
+router.get('', (req, res, next) => {
   const sql = `SELECT * FROM WORDS`;
   pool.getConnection((error, connection) => {
     if(error) {
@@ -45,32 +38,39 @@ router.get('', async (req, res, next) => {
         console.log(err);
         res.status(500).send('Internal Server Error');
       }
-      results.map((results) => {
+      results.forEach(function(result, index) {
         let lowerCased = {};
-        for(let key in value) {
-          lowerCased[key.toLowerCase()] = results[key];
+        for (let key in result) {
+          lowerCased[key.toLowerCase()] = result[key];
         }
-        results = lowerCased;
-      });
+        this[index] = lowerCased;
+      }, results);
       res.send(results);
     });
   });
 });
 
-router.get('/:seq', async (req, res, next) => {
+router.get('/:seq', (req, res, next) => {
   const word_seq = req.params.seq;
   const sql = `SELECT * FROM WORDS WHERE SEQ = ${word_seq}`;
   pool.getConnection((error, connection) => {
-    if(error) {
+    if (error) {
       console.log(err);
       res.status(500).send('Internal Server Error');
     }
     connection.query(sql, (error, results, fields) => {
       connection.release();
-      if(error) {
+      if (error) {
         console.log(err);
         res.status(500).send('Internal Server Error');
       }
+      results.forEach(function(result, index) {
+        let lowerCased = {};
+        for (let key in result) {
+          lowerCased[key.toLowerCase()] = result[key];
+        }
+        this[index] = lowerCased;
+      }, results);
       res.send(results);
     });
   });
