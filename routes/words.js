@@ -20,6 +20,13 @@ router.post('', async (req, res, next) => {
         console.log(err);
         res.status(500).send('Internal Server Error');
       }
+      results.map((results) => {
+        let lowerCased = {};
+        for(let key in value) {
+          lowerCased[key.toLowerCase()] = results[key];
+        }
+        results = lowerCased;
+      });
       res.send(results);
     });
   });
@@ -38,6 +45,13 @@ router.get('', async (req, res, next) => {
         console.log(err);
         res.status(500).send('Internal Server Error');
       }
+      results.map((results) => {
+        let lowerCased = {};
+        for(let key in value) {
+          lowerCased[key.toLowerCase()] = results[key];
+        }
+        results = lowerCased;
+      });
       res.send(results);
     });
   });
