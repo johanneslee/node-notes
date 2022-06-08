@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
+const oxfordRouter = require('./routes/oxford');
+const papagoRouter = require('./routes/papago');
 const wordsRouter = require('./routes/words');
 
 dotenv.config();
@@ -33,6 +35,8 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', indexRouter);
+app.use('/oxford', oxfordRouter);
+app.use('/papago', papagoRouter);
 app.use('/words', wordsRouter);
 
 // catch 404 and forward to error handler
