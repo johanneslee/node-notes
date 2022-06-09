@@ -6,7 +6,7 @@ dotenv.config();
 const router = express.Router();
 
 router.get('/entries/:english', async (req, res, next) => {
-  const english = encodeURIComponent(req.params.english.toLowerCase());
+  const english = req.params.english.toLowerCase();
   const url = `${process.env.OXFORD_DOMAIN}/api/v2/entries/en/${english}`;
   const config = {
     headers: {
@@ -23,7 +23,9 @@ router.get('/entries/:english', async (req, res, next) => {
       .map(entry => entry.lexicalEntries[0].entries[0].senses[0].definitions[0])[0]
     )
     .catch(err => console.error(err));
-  res.json((typeof(response) === 'undefined') ? 'No Results' : response);
+  res.json({
+    description: (typeof(response) === 'undefined') ? 'No Results' : response
+  });
 });
 
 module.exports = router;
