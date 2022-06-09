@@ -24,7 +24,7 @@ router.get('/entries/:english', async (req, res, next) => {
     )
     .catch(err => console.error(err));
   res.json({
-    description: (typeof(response) === 'undefined') ? 'No Results' : response
+    description: (typeof(response) === 'undefined') ? '' : response
   });
 });
 

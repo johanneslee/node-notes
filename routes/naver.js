@@ -11,7 +11,7 @@ router.get('/papago/:korean', async (req, res, next) => {
   const params = new URLSearchParams();
   params.append('source', 'ko');
   params.append('target', 'en');
-  params.append('dict', true);
+  //params.append('dict', true);
   params.append('text', korean);
   const config = {
     headers: {
@@ -25,8 +25,8 @@ router.get('/papago/:korean', async (req, res, next) => {
     .then(res => res.data.message.result)
     .catch(err => console.error(err));
 
-  console.log(response);
   const english = response.translatedText;
+  /*
   const dict = response.dict;
   if(dict !== '' && typeof(dict) !== 'undefined'){
     // Not use
@@ -41,6 +41,7 @@ router.get('/papago/:korean', async (req, res, next) => {
       });
     });
   }
+  */
 
   res.json({
     english: (typeof(english) === 'undefined') ? '' : english
