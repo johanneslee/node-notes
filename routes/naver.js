@@ -22,7 +22,10 @@ router.get('/papago/:korean', async (req, res, next) => {
   };
 
   const response = await axios.post(url, params, config)
-    .then(res => res.data.message.result)
+    .then(res => {
+      console.log(res);
+      res.data.message.result
+    })
     .catch(err => console.error(err));
 
   const english = response.translatedText;
