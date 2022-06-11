@@ -3,5 +3,19 @@ extends layout
 block content
   h1 #{title}
   p This is for REST Api related to Angular-Notes
-  p [POST] /words
-  p [GET] /words/:seq
+  p
+    b WORDS
+  p Get words 
+  p - [GET] /words
+  p Create a word
+  p - [POST] /words
+  p Get a word
+  p - [GET] /words/{seq}
+  p 
+    b NAVER
+  p Translate a korean word
+  p - [GET] /naver/papago/{korean}
+  p 
+    b OXFORD
+  p Get an english description
+  p - [GET] /oxford/entries/{english}
